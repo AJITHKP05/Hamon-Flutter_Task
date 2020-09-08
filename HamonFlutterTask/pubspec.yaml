@@ -31,6 +31,9 @@ dependencies:
   bloc: any
   flutter_bloc: any
   http: any
+  # image_cropper: ^1.2.1
+  image_picker: ^0.6.7+4
+  fluttertoast: any
 
 dev_dependencies:
   flutter_test:

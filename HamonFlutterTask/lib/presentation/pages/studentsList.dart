@@ -1,4 +1,5 @@
-import 'package:HamonFlutterTask/mock/bloc/student_Bloc.dart';
+import 'package:HamonFlutterTask/mock/bloc/image_picker/image_picker_bloc.dart';
+import 'package:HamonFlutterTask/mock/bloc/student/student_Bloc.dart';
 import 'package:HamonFlutterTask/mock/models/student.dart';
 import 'package:HamonFlutterTask/presentation/pages/studentPage.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,9 @@ class _StudentsListPageState extends State<StudentsListPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => StudentPage(list[index]),
+                  builder: (context) => BlocProvider(
+                      create: (BuildContext context) => ImagePickerBloc(),
+                      child: StudentPage(list[index])),
                 ));
           },
         ),
