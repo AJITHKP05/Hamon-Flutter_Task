@@ -36,10 +36,7 @@ class StudentPage extends StatelessWidget {
               Center(
                 child: Stack(overflow: Overflow.visible, children: <Widget>[
                   InkWell(
-                    onTap: () {
-                      imageBloc
-                          .add(ImageSelectedEvent(source: ImageSource.camera));
-                    },
+                    onTap: () {},
                     child: CircleAvatar(
                       //padding: const EdgeInsets.all(8.0),
                       radius: 71,

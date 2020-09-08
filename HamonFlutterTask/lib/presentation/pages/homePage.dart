@@ -1,4 +1,5 @@
 import 'package:HamonFlutterTask/presentation/pages/studentsList.dart';
+import 'package:HamonFlutterTask/presentation/pages/subjectList.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -34,9 +35,15 @@ class HomePage extends StatelessWidget {
                 height: MediaQuery.of(context).size.height / 5,
                 child: FlatButton(
                     color: Colors.green,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SubjectListPage(),
+                          ));
+                    },
                     child: Text(
-                      "Teachers",
+                      "Subjects",
                       style: TextStyle(color: Colors.white),
                     ))),
             Container(
