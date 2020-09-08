@@ -51,7 +51,11 @@ class SubjectListPage extends StatelessWidget {
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
-          leading: Text("${list[index].id}"),
+          tileColor: Colors.green,
+          leading: Text("${list[index].id}",
+              style: TextStyle(
+                fontSize: 18,
+              )),
           title: Text(
             "${list[index].name}",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

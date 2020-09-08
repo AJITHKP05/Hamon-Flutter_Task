@@ -14,34 +14,28 @@ class _StudentsListPageState extends State<StudentsListPage> {
   @override
   Widget build(BuildContext context) {
     Widget home = CircularProgressIndicator();
-    return BlocProvider(
-      create: (BuildContext context) => Studentsbloc(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Students List"),
-        ),
-        body: Builder(
-          builder: (BuildContext context) =>
-              BlocListener<Studentsbloc, StudentListState>(
-            listener: (context, state) {
-              if (state is DataState) {
-                // home = Text("data");
-                // print("done");
-                home = viewData(state.list);
-              }
-              if (state is NoDataEvent) home = CircularProgressIndicator();
-            },
-            child: BlocBuilder<Studentsbloc, StudentListState>(
-              builder: (context, state) {
-                if (state is NoDataState) {
-                  final studentBloc = context.bloc<Studentsbloc>();
-                  print("object");
-                  studentBloc.add(DataEvent());
-                }
-                return Container(child: Center(child: home));
-              },
-            ),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Students List"),
+      ),
+      body: BlocListener<Studentsbloc, StudentListState>(
+        listener: (context, state) {
+          if (state is DataState) {
+            // home = Text("data");
+            // print("done");
+            home = viewData(state.list);
+          }
+          if (state is NoDataEvent) home = CircularProgressIndicator();
+        },
+        child: BlocBuilder<Studentsbloc, StudentListState>(
+          builder: (context, state) {
+            if (state is NoDataState) {
+              final studentBloc = context.bloc<Studentsbloc>();
+              print("object");
+              studentBloc.add(DataEvent());
+            }
+            return Container(child: Center(child: home));
+          },
         ),
       ),
     );
@@ -55,7 +49,11 @@ class _StudentsListPageState extends State<StudentsListPage> {
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
-          leading: Text("${list[index].id}"),
+          tileColor: Colors.green,
+          leading: Text("${list[index].id}",
+              style: TextStyle(
+                fontSize: 18,
+              )),
           title: Text(
             "${list[index].name}",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

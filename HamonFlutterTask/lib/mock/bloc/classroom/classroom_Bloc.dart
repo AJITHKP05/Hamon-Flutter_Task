@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:HamonFlutterTask/mock/models/classroom.dart';
 import 'package:HamonFlutterTask/mock/models/student.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -9,16 +10,16 @@ import 'package:meta/meta.dart';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
-part 'student_event.dart';
-part 'student_state.dart';
+part 'classroom_event.dart';
+part 'classroom_state.dart';
 
-class Studentsbloc extends Bloc<StudentEvent, StudentListState> {
-  Studentsbloc() : super(NoDataState());
+class Classroombloc extends Bloc<ClassroomEvent, ClassroomState> {
+  Classroombloc() : super(NoDataState());
   String url =
-      "https://hamon-interviewapi.herokuapp.com//students/?api_key=cAaf9";
-  List studentList;
+      "https://hamon-interviewapi.herokuapp.com//classrooms/?api_key=cAaf9";
+  List classroomList;
   @override
-  Stream<StudentListState> mapEventToState(StudentEvent event) async* {
+  Stream<ClassroomState> mapEventToState(ClassroomEvent event) async* {
     if (event is NoDataEvent) yield NoDataState();
     if (event is DataEvent) {
       yield LoadingState();
@@ -28,7 +29,7 @@ class Studentsbloc extends Bloc<StudentEvent, StudentListState> {
 
       getList(res);
 
-      yield DataState(studentList);
+      yield DataState(classroomList);
     }
   }
 
@@ -41,11 +42,11 @@ class Studentsbloc extends Bloc<StudentEvent, StudentListState> {
     print(json.decode(res.body));
     // List response = json.decode(res.body);
     print("response");
-    studentList = json
-        .decode(res.body)['students']
-        .map((data) => Student.fromJson(data))
+    classroomList = json
+        .decode(res.body)['classrooms']
+        .map((data) => Classroom.fromJson(data))
         .toList();
 
-    print(studentList.length);
+    print(classroomList.length);
   }
 }
