@@ -1,4 +1,6 @@
 import 'package:HamonFlutterTask/mock/bloc/student_Bloc.dart';
+import 'package:HamonFlutterTask/mock/models/student.dart';
+import 'package:HamonFlutterTask/presentation/pages/studentPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,8 +24,9 @@ class _StudentsListPageState extends State<StudentsListPage> {
               BlocListener<Studentsbloc, StudentListState>(
             listener: (context, state) {
               if (state is DataState) {
-                home = Text("data");
+                // home = Text("data");
                 // print("done");
+                home = viewData(state.list);
               }
               if (state is NoDataEvent) home = CircularProgressIndicator();
             },
@@ -38,6 +41,31 @@ class _StudentsListPageState extends State<StudentsListPage> {
               },
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  viewData(list) {
+    print(list.last.name);
+
+    return ListView.builder(
+      itemCount: list.length,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListTile(
+          leading: Text("${list[index].id}"),
+          title: Text(
+            "${list[index].name}",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StudentPage(list[index]),
+                ));
+          },
         ),
       ),
     );
