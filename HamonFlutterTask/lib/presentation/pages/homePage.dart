@@ -1,6 +1,8 @@
+import 'package:HamonFlutterTask/mock/bloc/classAssign/classAssign_Bloc.dart';
 import 'package:HamonFlutterTask/mock/bloc/classroom/classroom_Bloc.dart';
 import 'package:HamonFlutterTask/mock/bloc/student/student_Bloc.dart';
-import 'package:HamonFlutterTask/presentation/pages/assign.dart';
+import 'package:HamonFlutterTask/mock/bloc/subject/subject_Bloc.dart';
+import 'package:HamonFlutterTask/presentation/pages/assignPage.dart';
 import 'package:HamonFlutterTask/presentation/pages/classroomList.dart';
 import 'package:HamonFlutterTask/presentation/pages/studentsList.dart';
 import 'package:HamonFlutterTask/presentation/pages/subjectList.dart';
@@ -64,7 +66,20 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AssignPage(),
+                      builder: (context) => MultiBlocProvider(providers: [
+                        BlocProvider(
+                          create: (context) => Studentsbloc(),
+                        ),
+                        BlocProvider(
+                          create: (context) => Subjectsbloc(),
+                        ),
+                        BlocProvider(
+                          create: (context) => Classroombloc(),
+                        ),
+                        // BlocProvider(
+                        //   create: (context) => ClassAssignbloc(),
+                        // )
+                      ], child: AssignPage()),
                     ));
               }
             },
