@@ -6,8 +6,10 @@ import 'package:HamonFlutterTask/mock/bloc/student/student_Bloc.dart'
     as student;
 import 'package:HamonFlutterTask/mock/bloc/subject/subject_Bloc.dart'
     as subject;
+import 'package:HamonFlutterTask/mock/models/classroom.dart';
 import 'package:HamonFlutterTask/mock/models/student.dart';
 import 'package:HamonFlutterTask/mock/models/subject.dart';
+import 'package:HamonFlutterTask/presentation/pages/classroomDetails.dart';
 import 'package:HamonFlutterTask/presentation/pages/classroomView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,17 +102,6 @@ class _AssignPageState extends State<AssignPage> {
                   child: Column(
                 children: [
                   SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "Students List",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.black,
-                    ),
-                  ),
-                  studentHome,
-                  SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -121,6 +112,17 @@ class _AssignPageState extends State<AssignPage> {
                     ),
                   ),
                   subjectHome,
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Students List",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  ),
+                  studentHome,
                   SizedBox(
                     height: 20,
                   ),
@@ -175,7 +177,7 @@ class _AssignPageState extends State<AssignPage> {
                         // color: Colors.green,
                         width: 150,
                         child: Card(
-                          color: Colors.green[300],
+                          color: Colors.orange,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -195,10 +197,11 @@ class _AssignPageState extends State<AssignPage> {
                                   height: 20,
                                   child: Center(
                                     child: Draggable(
+                                      data: list[index],
                                       feedback: Icon(
                                         Icons.person,
                                         size: 100,
-                                        color: Colors.green,
+                                        color: Colors.orange,
                                       ),
                                       child: Text(
                                         "Drag",
@@ -241,7 +244,7 @@ class _AssignPageState extends State<AssignPage> {
                       width: 150,
                       height: 70,
                       child: Card(
-                        color: Colors.orange,
+                        color: Colors.green,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -262,11 +265,11 @@ class _AssignPageState extends State<AssignPage> {
                                 child: Center(
                                   child: Draggable(
                                     maxSimultaneousDrags: 1,
-                                    data: Subject,
+                                    data: list[index],
                                     feedback: Icon(
                                       Icons.article,
                                       size: 80,
-                                      color: Colors.orange,
+                                      color: Colors.green,
                                     ),
                                     child: Text(
                                       "Drag",
@@ -285,105 +288,235 @@ class _AssignPageState extends State<AssignPage> {
           ],
         ),
       );
-  classroomView(list) => ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemCount: list.length,
-      itemBuilder: (context, index) => BlocProvider(
-            create: (BuildContext context) => classAssign.ClassAssignbloc(),
-            child: Builder(
-              builder: (BuildContext context) => BlocListener<
-                  classAssign.ClassAssignbloc, classAssign.ClassAssignState>(
-                listener: (BuildContext context, state) {
-                  if (state is classAssign.NoDataState) {}
-                },
-                child: BlocBuilder<classAssign.ClassAssignbloc,
-                        classAssign.ClassAssignState>(
-                    builder: (BuildContext context, state) {
-                  final roomBloc = context.bloc<classAssign.ClassAssignbloc>();
-                  if (state is classAssign.NoDataState) {
-                    print("No $index    data state");
-                    roomBloc.add(classAssign.NoDataEvent(list[index]));
-                  }
-                  if (state is classAssign.DataState) {
-                    print(state.room.name);
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ClassroomView(roomBloc.getRoom())));
-                      },
-                      child: Container(
-                        color: Colors.blue[100],
-                        // height: 300,
-                        width: 200,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              roomBloc.getRoom().name,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(roomBloc.classroom.layout),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: 120,
-                              height: 90,
-                              color: Colors.red[300],
-                              child: roomBloc.getRoom().subject == null
-                                  ? Center(child: Text("Drag a Subject"))
-                                  : Center(
-                                      child: Text(
-                                          roomBloc.getRoom().subject.name)),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              width: 120,
-                              height: 90,
-                              color: Colors.orange[200],
-                              child: (roomBloc.getRoom().students == null ||
-                                      roomBloc.getRoom().size >
-                                          roomBloc.getRoom().students.length)
-                                  ? Center(child: Text("Drag a Students"))
-                                  : Center(child: Text("Classromm if Full")),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              width: 120,
-                              height: 30,
-                              color: Colors.greenAccent[200],
-                              child: (roomBloc.getRoom().students == null ||
-                                      roomBloc.getRoom().students.length == 0)
-                                  ? Center(child: Text("View Students"))
-                                  : Container(),
-                            ),
-                          ],
+  classroomView(list) {
+    Color subColor = Colors.green[300];
+    Color stuColor = Colors.orange[300];
+    Classroom classBack;
+    return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: list.length,
+        itemBuilder: (context, index) => BlocProvider(
+              create: (BuildContext context) => classAssign.ClassAssignbloc(),
+              child: Builder(
+                builder: (BuildContext context) => BlocListener<
+                    classAssign.ClassAssignbloc, classAssign.ClassAssignState>(
+                  listener: (BuildContext context, state) {
+                    if (state is classAssign.NoDataState) {}
+                  },
+                  child: BlocBuilder<classAssign.ClassAssignbloc,
+                          classAssign.ClassAssignState>(
+                      builder: (BuildContext context, state) {
+                    final roomBloc =
+                        context.bloc<classAssign.ClassAssignbloc>();
+                    if (state is classAssign.NoDataState) {
+                      print("No $index    data state");
+                      roomBloc.add(classAssign.NoDataEvent(list[index]));
+                    }
+                    if (state is classAssign.DataState) {
+                      print(state.room.name);
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ClassroomView(roomBloc.getRoom())));
+                        },
+                        child: Container(
+                          color: Colors.blue[100],
+                          // height: 300,
+                          width: 200,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                roomBloc.getRoom().name,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(roomBloc.classroom.layout),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              DragTarget(
+                                builder: (BuildContext context,
+                                    List<dynamic> candidateData,
+                                    List<dynamic> rejectedData) {
+                                  return Container(
+                                    width: 120,
+                                    height: 90,
+                                    color: subColor,
+                                    child: roomBloc.getRoom().subject == null
+                                        ? Center(child: Text("Drag a Subject"))
+                                        : Center(
+                                            child: Text(roomBloc
+                                                .getRoom()
+                                                .subject
+                                                .name)),
+                                  );
+                                },
+                                onAccept: (data) {
+                                  // print(data.name);
+                                  if (data is Subject) {
+                                    roomBloc
+                                        .add(classAssign.SubjectAddEvent(data));
+                                    setState(() {
+                                      subColor = Colors.green[300];
+                                    });
+                                  }
+                                },
+                                onWillAccept: (data) {
+                                  print("off target");
+                                  if (data is Subject) {
+                                    print("on target");
+                                    setState(() {
+                                      subColor = Colors.green[500];
+                                    });
+                                    return true;
+                                  }
+                                  setState(() {
+                                    subColor = Colors.red;
+                                  });
+                                  return false;
+                                },
+                                onLeave: (data) {
+                                  setState(() {
+                                    subColor = Colors.green[300];
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              DragTarget(
+                                builder: (BuildContext context,
+                                    List<dynamic> candidateData,
+                                    List<dynamic> rejectedData) {
+                                  return Container(
+                                    width: 120,
+                                    height: 90,
+                                    color: stuColor,
+                                    child: (roomBloc.getRoom().students ==
+                                                null ||
+                                            roomBloc
+                                                    .getRoom()
+                                                    .students
+                                                    .length ==
+                                                0)
+                                        ? Center(child: Text("Drag a Students"))
+                                        : (roomBloc.getRoom().students.length <
+                                                roomBloc.getRoom().size)
+                                            ? Container(
+                                                child: ListView(
+                                                  children: [
+                                                    Text(
+                                                        "Students on class: ${roomBloc.getRoom().students.length}"),
+                                                    Text(
+                                                        "Max: ${roomBloc.getRoom().size}")
+                                                  ],
+                                                ),
+                                              )
+                                            : Center(
+                                                child: Text(
+                                                    "Maximum Count (${roomBloc.getRoom().size}) reached"),
+                                              ),
+                                  );
+                                },
+                                onWillAccept: (data) {
+                                  // print(data.name);
+                                  if (data is Student) {
+                                    if (roomBloc.getRoom().subject == null) {
+                                      setState(() {
+                                        stuColor = Colors.red;
+                                      });
+                                      return false;
+                                    }
+                                    if (roomBloc.getRoom().students != null) {
+                                      print("if block outside");
+                                      if (roomBloc.getRoom().students.length ==
+                                          roomBloc.getRoom().size) {
+                                        print("if block inside");
+                                        setState(() {
+                                          stuColor = Colors.red;
+                                        });
+                                        return false;
+                                      }
+                                    }
+                                    if (roomBloc.classroom.students != null &&
+                                        roomBloc.classroom.students
+                                            .contains(data)) {
+                                      setState(() {
+                                        stuColor = Colors.red;
+                                      });
+                                      return false;
+                                    }
+                                    setState(() {
+                                      stuColor = Colors.orange;
+                                    });
+                                    return true;
+                                  }
+                                  setState(() {
+                                    stuColor = Colors.red;
+                                  });
+                                  return false;
+                                },
+                                onAccept: (data) {
+                                  roomBloc
+                                      .add(classAssign.StudentAddEvent(data));
+                                  setState(() {
+                                    stuColor = Colors.orange[300];
+                                  });
+                                },
+                                onLeave: (data) {
+                                  stuColor = Colors.orange[300];
+                                },
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              InkWell(
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ClassroomDetails(roomBloc.getRoom(),
+                                              (Classroom classroom) {
+                                        setState(() {
+                                          classBack = classroom;
+                                        });
+                                        roomBloc.add(
+                                            classAssign.NoDataEvent(classBack));
+                                      }),
+                                    )),
+                                child: Container(
+                                  width: 120,
+                                  height: 30,
+                                  color: Colors.greenAccent[200],
+                                  child:
+                                      Center(child: Text("Classroom Details")),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               ),
-            ),
-          ));
+            ));
+  }
+
   classAssignView(room) {}
 }

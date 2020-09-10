@@ -26,7 +26,11 @@ class ClassAssignbloc extends Bloc<ClassAssignEvent, ClassAssignState> {
       yield DataState(classroom);
     }
     if (event is StudentAddEvent) {
-      classroom.students.add(event.student);
+      if (classroom.students == null) {
+        List<Student> list = [event.student];
+        classroom.students = list;
+      } else
+        classroom.students.add(event.student);
 
       yield LoadingState();
 
