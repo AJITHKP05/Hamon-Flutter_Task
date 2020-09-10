@@ -7,6 +7,7 @@ import 'package:HamonFlutterTask/mock/bloc/student/student_Bloc.dart'
 import 'package:HamonFlutterTask/mock/bloc/subject/subject_Bloc.dart'
     as subject;
 import 'package:HamonFlutterTask/mock/models/student.dart';
+import 'package:HamonFlutterTask/mock/models/subject.dart';
 import 'package:HamonFlutterTask/presentation/pages/classroomView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -131,7 +132,7 @@ class _AssignPageState extends State<AssignPage> {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height * .4,
+                    height: MediaQuery.of(context).size.height * .44,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
@@ -260,10 +261,12 @@ class _AssignPageState extends State<AssignPage> {
                                 height: 20,
                                 child: Center(
                                   child: Draggable(
+                                    maxSimultaneousDrags: 1,
+                                    data: Subject,
                                     feedback: Icon(
                                       Icons.article,
                                       size: 80,
-                                      color: Colors.green,
+                                      color: Colors.orange,
                                     ),
                                     child: Text(
                                       "Drag",
@@ -360,6 +363,18 @@ class _AssignPageState extends State<AssignPage> {
                                           roomBloc.getRoom().students.length)
                                   ? Center(child: Text("Drag a Students"))
                                   : Center(child: Text("Classromm if Full")),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              width: 120,
+                              height: 30,
+                              color: Colors.greenAccent[200],
+                              child: (roomBloc.getRoom().students == null ||
+                                      roomBloc.getRoom().students.length == 0)
+                                  ? Center(child: Text("View Students"))
+                                  : Container(),
                             ),
                           ],
                         ),
