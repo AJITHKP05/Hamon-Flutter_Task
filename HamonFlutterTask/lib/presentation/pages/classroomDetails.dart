@@ -3,6 +3,7 @@ import 'package:HamonFlutterTask/mock/models/classroom.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ClassroomDetails extends StatefulWidget {
   final Classroom room;
@@ -21,6 +22,14 @@ class _ClassroomDetailsState extends State<ClassroomDetails> {
         actions: [
           FlatButton(
               onPressed: () {
+                Fluttertoast.showToast(
+                    msg: "Changes saved ",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.green,
+                    textColor: Colors.black,
+                    fontSize: 16.0);
                 widget.callBackClass(widget.room);
                 Navigator.pop(context);
               },

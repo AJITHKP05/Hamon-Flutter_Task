@@ -41,22 +41,33 @@ class ClassroomList extends StatelessWidget {
       itemCount: list.length,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListTile(
-          tileColor: Colors.green,
-          leading: Text("${list[index].id}",
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: ListTile(
+            trailing: Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+            ),
+            tileColor: Colors.blue[400],
+            leading: Text("${list[index].id}",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                )),
+            title: Text(
+              "${list[index].name}",
               style: TextStyle(
-                fontSize: 18,
-              )),
-          title: Text(
-            "${list[index].name}",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold),
+            ),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ClassroomPage(list[index])));
+            },
           ),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ClassroomPage(list[index])));
-          },
         ),
       ),
     );

@@ -13,6 +13,7 @@ import 'package:HamonFlutterTask/presentation/pages/classroomDetails.dart';
 import 'package:HamonFlutterTask/presentation/pages/classroomView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AssignPage extends StatefulWidget {
   @override
@@ -182,10 +183,14 @@ class _AssignPageState extends State<AssignPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
-                                child: Text(
-                                  list[index].name,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
+                                child: Container(
+                                  child: Center(
+                                    child: Text(
+                                      list[index].name,
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 18),
+                                    ),
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -249,10 +254,12 @@ class _AssignPageState extends State<AssignPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: Text(
-                                list[index].name,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 18),
+                              child: Center(
+                                child: Text(
+                                  list[index].name,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 18),
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -289,8 +296,8 @@ class _AssignPageState extends State<AssignPage> {
         ),
       );
   classroomView(list) {
-    Color subColor = Colors.green[300];
-    Color stuColor = Colors.orange[300];
+    Color subColor = Colors.green[200];
+    Color stuColor = Colors.orange[200];
     Classroom classBack;
     return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
@@ -327,187 +334,241 @@ class _AssignPageState extends State<AssignPage> {
                                   builder: (context) =>
                                       ClassroomView(roomBloc.getRoom())));
                         },
-                        child: Container(
-                          color: Colors.blue[100],
-                          // height: 300,
-                          width: 200,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                roomBloc.getRoom().name,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(roomBloc.classroom.layout),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              DragTarget(
-                                builder: (BuildContext context,
-                                    List<dynamic> candidateData,
-                                    List<dynamic> rejectedData) {
-                                  return Container(
-                                    width: 120,
-                                    height: 90,
-                                    color: subColor,
-                                    child: roomBloc.getRoom().subject == null
-                                        ? Center(child: Text("Drag a Subject"))
-                                        : Center(
-                                            child: Text(roomBloc
-                                                .getRoom()
-                                                .subject
-                                                .name)),
-                                  );
-                                },
-                                onAccept: (data) {
-                                  // print(data.name);
-                                  if (data is Subject) {
-                                    roomBloc
-                                        .add(classAssign.SubjectAddEvent(data));
-                                    setState(() {
-                                      subColor = Colors.green[300];
-                                    });
-                                  }
-                                },
-                                onWillAccept: (data) {
-                                  print("off target");
-                                  if (data is Subject) {
-                                    print("on target");
-                                    setState(() {
-                                      subColor = Colors.green[500];
-                                    });
-                                    return true;
-                                  }
-                                  setState(() {
-                                    subColor = Colors.red;
-                                  });
-                                  return false;
-                                },
-                                onLeave: (data) {
-                                  setState(() {
-                                    subColor = Colors.green[300];
-                                  });
-                                },
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              DragTarget(
-                                builder: (BuildContext context,
-                                    List<dynamic> candidateData,
-                                    List<dynamic> rejectedData) {
-                                  return Container(
-                                    width: 120,
-                                    height: 90,
-                                    color: stuColor,
-                                    child: (roomBloc.getRoom().students ==
-                                                null ||
-                                            roomBloc
-                                                    .getRoom()
-                                                    .students
-                                                    .length ==
-                                                0)
-                                        ? Center(child: Text("Drag a Students"))
-                                        : (roomBloc.getRoom().students.length <
-                                                roomBloc.getRoom().size)
-                                            ? Container(
-                                                child: ListView(
-                                                  children: [
-                                                    Text(
-                                                        "Students on class: ${roomBloc.getRoom().students.length}"),
-                                                    Text(
-                                                        "Max: ${roomBloc.getRoom().size}")
-                                                  ],
-                                                ),
-                                              )
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Container(
+                            color: Colors.blue[400],
+                            // height: 300,
+                            width: 200,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  roomBloc.getRoom().name,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  roomBloc.classroom.layout,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                DragTarget(
+                                  builder: (BuildContext context,
+                                      List<dynamic> candidateData,
+                                      List<dynamic> rejectedData) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        width: 120,
+                                        height: 90,
+                                        color: subColor,
+                                        child: roomBloc.getRoom().subject ==
+                                                null
+                                            ? Center(
+                                                child: Text("Drag a Subject"))
                                             : Center(
-                                                child: Text(
-                                                    "Maximum Count (${roomBloc.getRoom().size}) reached"),
-                                              ),
-                                  );
-                                },
-                                onWillAccept: (data) {
-                                  // print(data.name);
-                                  if (data is Student) {
-                                    if (roomBloc.getRoom().subject == null) {
+                                                child: Text(roomBloc
+                                                    .getRoom()
+                                                    .subject
+                                                    .name)),
+                                      ),
+                                    );
+                                  },
+                                  onAccept: (data) {
+                                    // print(data.name);
+                                    if (data is Subject) {
+                                      roomBloc.add(
+                                          classAssign.SubjectAddEvent(data));
                                       setState(() {
-                                        stuColor = Colors.red;
+                                        subColor = Colors.green[200];
                                       });
-                                      return false;
+                                      getAlert(
+                                          "${data.name} added to class ${roomBloc.getRoom().name}");
                                     }
-                                    if (roomBloc.getRoom().students != null) {
-                                      print("if block outside");
-                                      if (roomBloc.getRoom().students.length ==
-                                          roomBloc.getRoom().size) {
-                                        print("if block inside");
+                                  },
+                                  onWillAccept: (data) {
+                                    // print("off target");
+                                    if (data is Subject) {
+                                      // print("on target");
+                                      setState(() {
+                                        subColor = Colors.green;
+                                      });
+
+                                      return true;
+                                    }
+                                    setState(() {
+                                      subColor = Colors.red;
+                                    });
+                                    return false;
+                                  },
+                                  onLeave: (data) {
+                                    setState(() {
+                                      subColor = Colors.green[200];
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                DragTarget(
+                                  builder: (BuildContext context,
+                                      List<dynamic> candidateData,
+                                      List<dynamic> rejectedData) {
+                                    return ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Container(
+                                        width: 120,
+                                        height: 90,
+                                        color: stuColor,
+                                        child: (roomBloc.getRoom().students ==
+                                                    null ||
+                                                roomBloc
+                                                        .getRoom()
+                                                        .students
+                                                        .length ==
+                                                    0)
+                                            ? Center(
+                                                child: Text("Drag a Students"))
+                                            : (roomBloc
+                                                        .getRoom()
+                                                        .students
+                                                        .length <
+                                                    roomBloc.getRoom().size)
+                                                ? Container(
+                                                    child: ListView(
+                                                      children: [
+                                                        SizedBox(
+                                                          height: 20,
+                                                        ),
+                                                        Container(
+                                                          child: Center(
+                                                            child: Text(
+                                                                "Students : ${roomBloc.getRoom().students.length}"),
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          child: Center(
+                                                            child: Text(
+                                                                "Max: ${roomBloc.getRoom().size}"),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    child: Center(
+                                                      child: Text(
+                                                          " Maximum Count (${roomBloc.getRoom().size}) reached"),
+                                                    ),
+                                                  ),
+                                      ),
+                                    );
+                                  },
+                                  onWillAccept: (data) {
+                                    // print(data.name);
+                                    if (data is Student) {
+                                      if (roomBloc.getRoom().subject == null) {
                                         setState(() {
                                           stuColor = Colors.red;
                                         });
+                                        getWarning("select a subject first");
                                         return false;
                                       }
-                                    }
-                                    if (roomBloc.classroom.students != null &&
-                                        roomBloc.classroom.students
-                                            .contains(data)) {
+                                      if (roomBloc.getRoom().students != null) {
+                                        print("if block outside");
+                                        if (roomBloc
+                                                .getRoom()
+                                                .students
+                                                .length ==
+                                            roomBloc.getRoom().size) {
+                                          print("if block inside");
+                                          setState(() {
+                                            stuColor = Colors.red;
+                                          });
+                                          getWarning("The class is Full..!!!");
+                                          return false;
+                                        }
+                                      }
+                                      if (roomBloc.classroom.students != null &&
+                                          roomBloc.classroom.students
+                                              .contains(data)) {
+                                        setState(() {
+                                          stuColor = Colors.red;
+                                        });
+                                        getWarning(
+                                            "He is already in class !!!");
+                                        return false;
+                                      }
                                       setState(() {
-                                        stuColor = Colors.red;
+                                        stuColor = Colors.orange;
                                       });
-                                      return false;
+                                      return true;
                                     }
                                     setState(() {
-                                      stuColor = Colors.orange;
+                                      stuColor = Colors.red;
                                     });
-                                    return true;
-                                  }
-                                  setState(() {
-                                    stuColor = Colors.red;
-                                  });
-                                  return false;
-                                },
-                                onAccept: (data) {
-                                  roomBloc
-                                      .add(classAssign.StudentAddEvent(data));
-                                  setState(() {
+                                    return false;
+                                  },
+                                  onAccept: (data) {
+                                    roomBloc
+                                        .add(classAssign.StudentAddEvent(data));
+                                    setState(() {
+                                      stuColor = Colors.orange[300];
+                                    });
+                                    getAlert(
+                                        "${data.name} added to class ${roomBloc.getRoom().name}");
+                                  },
+                                  onLeave: (data) {
                                     stuColor = Colors.orange[300];
-                                  });
-                                },
-                                onLeave: (data) {
-                                  stuColor = Colors.orange[300];
-                                },
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              InkWell(
-                                onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ClassroomDetails(roomBloc.getRoom(),
-                                              (Classroom classroom) {
-                                        setState(() {
-                                          classBack = classroom;
-                                        });
-                                        roomBloc.add(
-                                            classAssign.NoDataEvent(classBack));
-                                      }),
-                                    )),
-                                child: Container(
-                                  width: 120,
-                                  height: 30,
-                                  color: Colors.greenAccent[200],
-                                  child:
-                                      Center(child: Text("Classroom Details")),
+                                  },
                                 ),
-                              ),
-                            ],
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                InkWell(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ClassroomDetails(roomBloc.getRoom(),
+                                                (Classroom classroom) {
+                                          setState(() {
+                                            classBack = classroom;
+                                          });
+                                          roomBloc.add(classAssign.NoDataEvent(
+                                              classBack));
+                                        }),
+                                      )),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Container(
+                                      width: 120,
+                                      height: 30,
+                                      color: Colors.black,
+                                      child: Center(
+                                          child: Text(
+                                        "Classroom Details",
+                                        style: TextStyle(color: Colors.white),
+                                      )),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -519,4 +580,22 @@ class _AssignPageState extends State<AssignPage> {
   }
 
   classAssignView(room) {}
+
+  getWarning(msg) => Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0);
+
+  getAlert(msg) => Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.green,
+      textColor: Colors.black,
+      fontSize: 16.0);
 }

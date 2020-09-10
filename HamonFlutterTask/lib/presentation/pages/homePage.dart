@@ -20,22 +20,22 @@ class HomePage extends StatelessWidget {
         resizeToAvoidBottomPadding: true,
         body: Wrap(
           children: [
-            getBox(context, "Students"),
-            getBox(context, "Subjects"),
-            getBox(context, "ClassRooms"),
-            getBox(context, "Assign")
+            getBox(context, "Students", Colors.green),
+            getBox(context, "Subjects", Colors.orange),
+            getBox(context, "ClassRooms", Colors.blue[400]),
+            getBox(context, "Assign", Colors.black)
           ],
         ));
   }
 
-  getBox(context, text) => Container(
-      padding: EdgeInsets.all(15),
-      width: MediaQuery.of(context).size.width / 2,
+  getBox(context, text, color) => Container(
+      padding: EdgeInsets.all(20),
+      width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height / 5,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
         child: FlatButton(
-            color: Colors.green,
+            color: color,
             onPressed: () {
               if (text == "Students") {
                 Navigator.push(
@@ -85,7 +85,7 @@ class HomePage extends StatelessWidget {
             },
             child: Text(
               text,
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.white, fontSize: 20),
             )),
       ));
 }
