@@ -55,7 +55,7 @@ class _AssignPageState extends State<AssignPage> {
         BlocListener<classroom.Classroombloc, classroom.ClassroomState>(
           listener: (context, state) {
             if (state is classroom.DataState) {
-              classroomHome = classroomView(state.list);
+              classroomHome = classroomGrid(state.list);
             }
             if (state is classroom.NoDataEvent)
               classroomHome = LinearProgressIndicator();
@@ -134,17 +134,8 @@ class _AssignPageState extends State<AssignPage> {
                       color: Colors.black,
                     ),
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * .44,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Center(child: classroomHome),
-                      ],
-                    ),
+                  Center(
+                    child: classroomHome,
                   ),
                 ],
               )),
@@ -154,6 +145,19 @@ class _AssignPageState extends State<AssignPage> {
       }),
     );
   }
+
+  classroomGrid(list) => Container(
+        height: MediaQuery.of(context).size.height * .44,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Center(child: classroomView(list)),
+          ],
+        ),
+      );
 
   studentView(list) => Container(
         height: 91,
@@ -183,12 +187,20 @@ class _AssignPageState extends State<AssignPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Expanded(
-                                child: Container(
-                                  child: Center(
-                                    child: Text(
-                                      list[index].name,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 18),
+                                child: Draggable(
+                                  data: list[index],
+                                  feedback: Icon(
+                                    Icons.person,
+                                    size: 100,
+                                    color: Colors.orange,
+                                  ),
+                                  child: Container(
+                                    child: Center(
+                                      child: Text(
+                                        list[index].name,
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 18),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -201,18 +213,10 @@ class _AssignPageState extends State<AssignPage> {
                                   width: 150,
                                   height: 20,
                                   child: Center(
-                                    child: Draggable(
-                                      data: list[index],
-                                      feedback: Icon(
-                                        Icons.person,
-                                        size: 100,
-                                        color: Colors.orange,
-                                      ),
-                                      child: Text(
-                                        "Drag",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
+                                    child: Text(
+                                      "Drag",
+                                      style: TextStyle(
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ))
@@ -254,11 +258,22 @@ class _AssignPageState extends State<AssignPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: Center(
-                                child: Text(
-                                  list[index].name,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
+                              child: Draggable(
+                                maxSimultaneousDrags: 1,
+                                data: list[index],
+                                feedback: Icon(
+                                  Icons.article,
+                                  size: 80,
+                                  color: Colors.green,
+                                ),
+                                child: Container(
+                                  child: Center(
+                                    child: Text(
+                                      list[index].name,
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 18),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -270,19 +285,10 @@ class _AssignPageState extends State<AssignPage> {
                                 width: 150,
                                 height: 20,
                                 child: Center(
-                                  child: Draggable(
-                                    maxSimultaneousDrags: 1,
-                                    data: list[index],
-                                    feedback: Icon(
-                                      Icons.article,
-                                      size: 80,
-                                      color: Colors.green,
-                                    ),
-                                    child: Text(
-                                      "Drag",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                  child: Text(
+                                    "Drag",
+                                    style: TextStyle(
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ))
